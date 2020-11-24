@@ -1,5 +1,6 @@
 package com.codewithsouma;
 
+import com.codewithsouma.array.MaxMinElement;
 import com.codewithsouma.array.ReverseArray;
 
 import java.util.Arrays;
@@ -8,10 +9,11 @@ import java.util.Arrays;
 public class Main {
 
     public static void main(String[] args) {
-        ReverseArray reverseArray = new ReverseArray();
-        int[] numbers = {10,20,30};
-        System.out.println(reverseArray.reverse("Souma"));
-        System.out.println(Arrays.toString(reverseArray.reverse(numbers)));
+        int[] numbers = {40};
+        System.out.println(Arrays.toString(new ReverseArray().reverse(numbers)));
+        MaxMinElement maxMinElement = new MaxMinElement();
+        maxMinElement.PrintMaximumAndMinimum(numbers);
+
 
     }
 }

@@ -1,8 +1,13 @@
 package com.codewithsouma.array;
 
+import java.util.Arrays;
+
 public class ReverseArray {
 
+    // works for sorted array
     public int[] reverse(int[] array) {
+        if (array.length == 0) return  array;
+        Arrays.sort(array);
        int start = 0;
        int end = array.length - 1;
         while (start < end ){
