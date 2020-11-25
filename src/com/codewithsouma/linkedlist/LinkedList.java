@@ -1,153 +1,132 @@
 package com.codewithsouma.linkedlist;
 
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 
 public class LinkedList {
+    private class Node {
+        private int value;
+        private Node next;
+
+        public Node(int value) {
+            this.value = value;
+        }
+    }
+
     private Node first;
     private Node last;
-    private int count;
+    private int size = 0;
 
-    public void addFirst(int value) {
-        Node newNode = new Node(value);
-        if (size() <= 0)
-            createList(newNode);
+    public void addLast(int item) {
+        var node = new Node(item);
+        if (isEmpty())
+            first = last = node;
         else {
-            newNode.setNext(first);
-            first = newNode;
-            count++;
+            last.next = node;
+            last = node;
         }
+        size++;
     }
 
-    private void createList(Node newNode) {
-        first = newNode;
-        last = newNode;
-        count++;
-    }
-
-    public void addLast(int value) {
-        Node newNode = new Node(value);
-        if (size() <= 0)
-            createList(newNode);
+    public void addFirst(int item) {
+        var node = new Node(item);
+        if (isEmpty())
+            first = last = node;
         else {
-            last.setNext(newNode);
-            last = newNode;
-            count++;
+            node.next = first;
+            first = node;
         }
+        size++;
     }
 
-    public void add(int value) {
-        addLast(value);
+    private boolean isEmpty() {
+        return first == null;
     }
 
-    public void add(int index, int value){
-        if (index < 0 || index > size()) throw new IndexOutOfBoundsException("Index is not valid");
-        else if (index == 0) addLast(value);
-        else if (index == size()) addLast(value);
-        else {
-            Node newNode = new Node(value);
-            Node current = first;
-            Node previous = first;
-            for (int i = 0; i < index; i++) {
-                previous = current;
-                current = current.getNext();
-            }
-            newNode.setNext(current);
-            previous.setNext(newNode);
-            count++;
-        }
-    }
-
-    public int size() {
-        return count;
-    }
-
-    public void removeFirst() {
-        if (size() <= 0) return;
-        else if (size() == 1) {
-            first = null;
-            last = null;
-            count--;
-        } else {
-            Node current = first;
-            first = first.getNext();
-            current.setNext(null);
-            count--;
-        }
-    }
-
-    public void removeLast() {
-        if (size() <= 0) return;
-        else if (size() == 1)
-            removeFirst();
-        else {
-            Node current = first;
-            Node previous = current;
-            while (current.getNext() != null) {
-                previous = current;
-                current = current.getNext();
-            }
-            previous.setNext(null);
-            last = previous;
-            count--;
-        }
-    }
-
-    public void remove(int index) {
-        if (size() <= 0 || index < 0 || index >= size())
-            throw new IndexOutOfBoundsException("Invalid index");
-        else if (index == 0)
-            removeFirst();
-        else if (index == size() -1)
-            removeLast();
-        else
-            removeMiddle(index);
-    }
-
-    private void removeMiddle(int index) {
-        Node current = first;
-        Node previous = first;
-        for (int i = 0; i < index; i++) {
-            previous = current;
-            current = current.getNext();
-        }
-        previous.setNext(current.getNext());
-        current.setNext(null);
-        count--;
-    }
-
-
-    public boolean contains(int value) {
-        if (size() <= 0) return false;
-        Node current = first;
+    public int indexOf(int item) {
+        int index = 0;
+        var current = first;
         while (current != null) {
-            if (current.getValue() == value) return true;
-            current = current.getNext();
-        }
-        return false;
-    }
-
-    public int indexOf(int value) {
-        if (size() <= 0) return -1;
-        Node current = first;
-        for (int i = 0; i < size(); i++) {
-            if (current.getValue() == value) return i;
-            current = current.getNext();
+            if (current.value == item) return index;
+            current = current.next;
+            index++;
         }
         return -1;
     }
 
-    @Override
-    public String toString() {
-        if (size() <= 0) return "[]";
-        Node current = first;
-        int[] items = new int[size()];
-        for (int i = 0; i < size(); i++) {
-            items[i] = current.getValue();
-            current = current.getNext();
-        }
-        return Arrays.toString(items);
+    public boolean contains(int item) {
+        return indexOf(item) != -1;
     }
 
+    public void removeFirst() {
+        if (isEmpty()) throw new NoSuchElementException();
+        else if (first == last)
+            first = last = null;
+        else {
+            Node second = first.next;
+            first.next = null;
+            first = second;
+        }
+        size--;
+    }
+
+    public void removeLast() {
+        if (isEmpty()) throw new NoSuchElementException();
+        else if (first == last)
+            first = last = null;
+        else {
+            var previous = getPrevious(last);
+            previous.next = null;
+            last = previous;
+        }
+        size--;
+    }
+
+    private Node getPrevious(Node node) {
+        Node current = first;
+        while (current != null) {
+            if (current.next == node) return current;
+            current = current.next;
+        }
+        return null;
+    }
+
+    public int size() {
+        return size;
+    }
+
+    public int[] toArray(){
+        int[] array = new int[size];
+        Node current = first;
+        int index = 0;
+        while (current != null){
+            array[index++] = current.value;
+            current = current.next;
+        }
+        return array;
+    }
+
+    public void reverse(){
+        if (isEmpty()) return;
+        //       f          l  --> Don't change this two pointer
+        // null <-10  <-20 <- 30  null;
+        //                   pre  curr   nex
+        Node previous = null;
+        Node current = first;
+        Node next = current.next;
+
+        while (true){
+            current.next = previous;
+            previous = current;
+            current = next;
+            if (current == null) break;
+            next = next.next;
+        }
+
+        //swap first with last
+        last = first;
+        first = previous;
+    }
 
 }
