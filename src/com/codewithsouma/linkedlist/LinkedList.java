@@ -129,4 +129,30 @@ public class LinkedList {
         first = previous;
     }
 
+    public int getKthFromTheEnd(int k){
+        if (isEmpty()) throw new IllegalStateException();
+        else if (k < 1) throw  new IllegalArgumentException();
+        // [10, ->  20, ->  30, ->   40]
+        // *               *
+        // a               b
+        // k = 1 -> 40
+        // k = 2 -> 30
+        // k = 3 -> 20 distance = k - 1
+
+        Node a = first;
+        Node b = first;
+
+        for (int i = 0; i < k - 1; i++) {
+            b = b.next;
+            if (b == null) throw new IllegalArgumentException();
+        }
+
+        while (b != last){
+            a = a.next;
+            b = b.next;
+        }
+
+        return a.value;
+    }
+
 }
