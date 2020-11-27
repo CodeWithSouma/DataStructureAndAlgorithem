@@ -1,17 +1,14 @@
 package com.codewithsouma;
 
 
-import com.codewithsouma.stack.StringReverser;
-
-import java.util.Arrays;
-import java.util.Stack;
+import com.codewithsouma.stack.BalanceExpression;
 
 public class Main {
 
     public static void main(String[] args) {
-        String str = "abcd";
-        StringReverser reverser = new StringReverser();
-        System.out.println(reverser.reverse(str));
+        String expression = "{";
+        boolean result = BalanceExpression.testExpression(expression);
+        System.out.println(result);
 
     }
 }
