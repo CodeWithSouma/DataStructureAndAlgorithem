@@ -1,21 +1,17 @@
 package com.codewithsouma;
 
 
-import com.codewithsouma.linkedlist.LinkedList;
+import com.codewithsouma.stack.StringReverser;
 
 import java.util.Arrays;
+import java.util.Stack;
 
 public class Main {
 
     public static void main(String[] args) {
-        var list = new LinkedList();
-        list.addLast(10);
-        list.addLast(20);
-        list.addLast(30);
-        list.addLast(40);
-
-        System.out.println(Arrays.toString(list.toArray()));
-        System.out.println(list.getKthFromTheEnd(3));
+        String str = "abcd";
+        StringReverser reverser = new StringReverser();
+        System.out.println(reverser.reverse(str));
 
     }
 }
