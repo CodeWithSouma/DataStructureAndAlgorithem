@@ -19,11 +19,11 @@ public class Stack {
     public int pop() {
         if (isEmpty()) throw new IllegalStateException();
 
-        return stack[--count];
+       return stack[ --count];
     }
 
     public int peek() {
-        if (isEmpty()) throw new IndexOutOfBoundsException();
+        if (isEmpty()) throw new IllegalStateException();
 
         return stack[count - 1];
     }
