@@ -1,9 +1,10 @@
 package com.codewithsouma.stack;
 
+import java.util.Arrays;
+
 public class Stack {
     private final int[] stack;
-    private int count = 0;
-    private int top = -1;
+    private int count;
 
     public Stack(int size) {
         this.stack = new int[size];
@@ -12,36 +13,36 @@ public class Stack {
     public void add(int item) {
         if (isFull()) throw new StackOverflowError();
 
-        stack[++top] = item;
-        count++;
-
+        stack[count++] = item;
     }
 
     public int pop() {
         if (isEmpty()) throw new IllegalStateException();
 
-        int item = stack[top--];
-        count--;
-        return item;
+        return stack[--count];
     }
 
     public int peek() {
         if (isEmpty()) throw new IndexOutOfBoundsException();
 
-        return stack[top];
+        return stack[count - 1];
     }
 
     public int length() {
-        return count;
+      return count;
     }
 
     public boolean isEmpty() {
-        return top == -1;
+        return count == 0;
     }
 
     private boolean isFull() {
-        return top == stack.length - 1;
+        return count == stack.length;
     }
 
-
+    @Override
+    public String toString() {
+        var content = Arrays.copyOfRange(stack,0,count);
+        return Arrays.toString(content);
+    }
 }

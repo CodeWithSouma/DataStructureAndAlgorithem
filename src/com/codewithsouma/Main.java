@@ -11,6 +11,13 @@ public class Main {
         stack.add(10);
         stack.add(20);
         stack.add(30);
+        System.out.println(stack.length());
+        stack.pop();
+        stack.pop();
+//        stack.pop();
+        System.out.println(stack);
+        System.out.println(stack.isEmpty());
+        System.out.println(stack.length());
 
 
 
