@@ -1,7 +1,7 @@
 package com.codewithsouma.stack;
 
 public class Stack {
-    private int[] stack;
+    private final int[] stack;
     private int count = 0;
     private int top = -1;
 
@@ -10,7 +10,7 @@ public class Stack {
     }
 
     public void add(int item) {
-        if (isFull()) throw new IndexOutOfBoundsException();
+        if (isFull()) throw new StackOverflowError();
 
         stack[++top] = item;
         count++;
@@ -18,20 +18,20 @@ public class Stack {
     }
 
     public int pop() {
-        if (isEmpty()) throw new IndexOutOfBoundsException();
+        if (isEmpty()) throw new IllegalStateException();
 
         int item = stack[top--];
         count--;
         return item;
     }
 
-    public int peek(){
+    public int peek() {
         if (isEmpty()) throw new IndexOutOfBoundsException();
 
         return stack[top];
     }
 
-    public int length(){
+    public int length() {
         return count;
     }
 
