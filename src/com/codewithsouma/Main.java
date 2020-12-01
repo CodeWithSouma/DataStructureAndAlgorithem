@@ -1,27 +1,23 @@
 package com.codewithsouma;
 
 
+import com.codewithsouma.queue.PriorityQueue;
 import com.codewithsouma.queue.QueueWithTwoStack;
 
 
 public class Main {
 
     public static void main(String[] args) {
-        QueueWithTwoStack queue = new QueueWithTwoStack();
-        queue.enqueue(10);
-        queue.enqueue(20);
-        queue.enqueue(30);
-        queue.enqueue(40);
+        PriorityQueue queue = new PriorityQueue();
+        queue.add(5);
+        queue.add(3);
+        queue.add(6);
+        queue.add(1);
+        queue.add(4);
 
-        System.out.println(queue.peek());
-        System.out.println(queue.dequeue());
-        System.out.println(queue.dequeue());
-        System.out.println(queue.dequeue());
-        System.out.println(queue.dequeue());
-        System.out.println(queue.dequeue());
-
-
-
+        while (!queue.isEmpty())
+            System.out.println(queue.remove());
+        System.out.println(queue);
 
     }
 
