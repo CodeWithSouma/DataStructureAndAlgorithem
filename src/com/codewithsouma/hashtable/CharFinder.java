@@ -1,41 +1,25 @@
 package com.codewithsouma.hashtable;
 
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class CharFinder {
-    private Map<Character, Integer> map = new HashMap<>();
+    public char findFirstNoneRepeatingChar(String string) {
+        Map<Character, Integer> map = new HashMap<>();
 
-    public char findFirstNonRepeatingChar(String string) {
-        if (string.isEmpty()) throw new IllegalStateException();
-
-        char[] charArray = string.toCharArray();
-        createHashTable(charArray);
-
-        return getFirstNoneRepeatedChar(charArray);
-    }
-
-    private char getFirstNoneRepeatedChar(char[] charArray) {
-        char noneRepeatedChar = ' ';
-        for (char ch : charArray) {
-            int repeat = map.get(ch);
-            if (repeat == 1) {
-                noneRepeatedChar = ch;
-                break;
-            }
-
+        char[] chars = string.toCharArray();
+        for (var ch : chars) {
+            int count = map.containsKey(ch) ? map.get(ch) : 0;
+            map.put(ch, count + 1);
         }
-        return noneRepeatedChar;
+
+        for (var ch : chars)
+            if (map.get(ch) == 1)
+                return ch;
+
+        return Character.MIN_VALUE;
+
     }
 
-    private void createHashTable(char[] charArray) {
-        for (char character : charArray) {
-            int count = 0;
-            for (char ch : charArray)
-                if (character == ch)
-                    count++;
-
-            map.put(character, count);
-        }
-    }
 }

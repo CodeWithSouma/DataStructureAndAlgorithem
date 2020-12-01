@@ -3,18 +3,13 @@ package com.codewithsouma;
 
 import com.codewithsouma.hashtable.CharFinder;
 
-import java.util.HashMap;
-import java.util.Map;
-
-
 public class Main {
 
     public static void main(String[] args) {
-        String str = "a green apple";
+        // a green apple
         CharFinder charFinder = new CharFinder();
-        var ch = charFinder.findFirstNonRepeatingChar(str);
+        char ch = charFinder.findFirstNoneRepeatingChar("a green apple");
         System.out.println(ch);
-
 
 
     }
