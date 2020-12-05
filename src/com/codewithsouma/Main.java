@@ -2,18 +2,20 @@ package com.codewithsouma;
 
 
 import com.codewithsouma.hashtable.CharFinder;
-
-import java.util.HashSet;
-import java.util.Set;
+import com.codewithsouma.hashtable.HashTable;
 
 public class Main {
 
     public static void main(String[] args) {
-        //green apple
-        CharFinder finder = new CharFinder();
-        char ch = finder.firstRepeatedCharacter("green apple");
-        System.out.println(ch);
+        HashTable hashTable = new HashTable();
+        hashTable.put(10,"Souma");
+        hashTable.put(10,"Soumadip Dey");
+        hashTable.put(20,"Babu Dey");
+        hashTable.remove(40);
+        hashTable.remove(10);
+        hashTable.remove(20);
+        System.out.println(hashTable);
+
+
     }
-
-
 }
