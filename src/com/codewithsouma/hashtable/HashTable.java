@@ -1,6 +1,5 @@
 package com.codewithsouma.hashtable;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 
 public class HashTable {
@@ -13,84 +12,59 @@ public class HashTable {
             this.key = key;
             this.value = value;
         }
-
-        @Override
-        public String toString() {
-            return "Entry{" +
-                    "key=" + key +
-                    ", value='" + value + '\'' +
-                    '}';
-        }
     }
 
-    LinkedList<Entry>[] hashTable = new LinkedList[10];
+    LinkedList<Entry>[] entries = new LinkedList[5];
 
     public void put(int key, String value) {
-        Entry item = new Entry(key, value);
-        int index = getHashValue(key);
-        if (currentIndexIsEmpty(index))
-            createLinkedListAndAddIntoHashTable(item, index);
-        else
-            handleCollisionsAndAddItem(key, item, hashTable[index]);
+        var entry = getEntry(key);
+        if (entry != null){
+            entry.value = value;
+            return;
+        }
+
+        getOrCreateBucket(key).add(new Entry(key,value));
     }
 
     public String get(int key) {
-        var index = getHashValue(key);
-        if (!currentIndexIsEmpty(index))
-            return getValue(key, hashTable[index]);
-
-        return null;
+        var entry = getEntry(key);
+        return  (entry == null) ? null : entry.value;
     }
 
-    public void remove(int key){
-        var index = getHashValue(key);
-        if (!currentIndexIsEmpty(index)){
-            var linkedList = hashTable[index];
-            linkedList.removeIf(item -> item.key == key);
+    public void remove(int key) {
+       var entry = getEntry(key);
+       if (entry == null)
+           throw new IllegalStateException();
+
+      getBucket(key).remove(entry);
+    }
+
+    private LinkedList<Entry> getBucket(int key){
+        return entries[hash(key)];
+    }
+
+    private LinkedList<Entry> getOrCreateBucket(int key){
+        var index = hash(key);
+        var bucket = entries[index];
+        if (bucket == null) {
+            entries[index] = new LinkedList<>();
+            bucket = entries[index];
         }
+        return bucket;
     }
 
-    private void createLinkedListAndAddIntoHashTable(Entry item, int index) {
-        var linkedList = createLinkedList(item);
-        hashTable[index] = linkedList;
-    }
-
-    private void handleCollisionsAndAddItem(int key, Entry item, LinkedList<Entry> linkedList1) {
-        var linkedList = linkedList1;
-        int indexOfNewKey = getIndexOfNewKey(linkedList, key);
-        if (indexOfNewKey != -1) linkedList.set(indexOfNewKey, item);
-        else linkedList.add(item);
-    }
-
-    private String getValue(int key, LinkedList<Entry> linkedList1) {
-        for (var item : linkedList1)
-            if (item.key == key) return item.value;
+    private Entry getEntry(int key) {
+        var bucket = getBucket(key);
+        if (bucket != null) {
+            for (var entry : bucket) {
+                if (entry.key == key) return entry;
+            }
+        }
         return null;
     }
 
-    private int getIndexOfNewKey(LinkedList<Entry> linkedList, int key) {
-        for (var item : linkedList)
-            if (item.key == key)
-                return linkedList.indexOf(item);
-        return -1;
+    private int hash(int key) {
+        return key % entries.length;
     }
 
-    private LinkedList<Entry> createLinkedList(Entry item) {
-        LinkedList<Entry> linkedList = new LinkedList<>();
-        linkedList.add(item);
-        return linkedList;
-    }
-
-    private boolean currentIndexIsEmpty(int index) {
-        return hashTable[index] == null;
-    }
-
-    private int getHashValue(int key) {
-        return key % hashTable.length;
-    }
-
-    @Override
-    public String toString() {
-        return Arrays.deepToString(hashTable);
-    }
 }
