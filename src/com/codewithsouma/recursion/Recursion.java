@@ -7,9 +7,7 @@ public class Recursion {
     }
 
     private static int factorial(int number){
-        int factorial = 1;
-        for (int i = 1; i <= number; i++)
-            factorial = factorial * i;
-        return factorial;
+        if (number == 0) return 1;
+        return number * factorial(number - 1);
     }
 }
