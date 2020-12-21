@@ -77,5 +77,17 @@ public class Tree {
         traversePreOrder(root.rightChild);
     }
 
+    public  void  traversePostOrder(){
+        traversePostOrder(root);
+    }
+
+    public void  traversePostOrder(Node root){
+        if (root == null) return;
+
+        traversePostOrder(root.leftChild);
+        traversePostOrder(root.rightChild);
+        System.out.println(root.value);
+    }
+
 
 }
