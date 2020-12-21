@@ -47,7 +47,6 @@ public class Tree {
 
     }
 
-
     public boolean find(int value) {
         boolean isPresent = false;
         if (root != null) {
@@ -65,6 +64,17 @@ public class Tree {
         }
 
         return isPresent;
+    }
+
+    public void  traversePreOrder(){
+        traversePreOrder(root);
+    }
+    public void traversePreOrder(Node root){
+        if (root == null) return;
+
+        System.out.println(root.value);
+        traversePreOrder(root.leftChild);
+        traversePreOrder(root.rightChild);
     }
 
 
