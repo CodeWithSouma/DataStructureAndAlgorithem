@@ -69,6 +69,7 @@ public class Tree {
     public void  traversePreOrder(){
         traversePreOrder(root);
     }
+
     public void traversePreOrder(Node root){
         if (root == null) return;
 
@@ -99,6 +100,15 @@ public class Tree {
         traverseInOrder(root.leftChild);
         System.out.println(root.value);
         traverseInOrder(root.rightChild);
+    }
+
+    public int height(){
+        return height(root);
+    }
+    private int height(Node root){
+        if (root == null) return -1;
+        if (root.leftChild == null || root.rightChild == null) return 0;
+        return 1 +Math.max(height(root.leftChild),height(root.rightChild));
     }
 
 
