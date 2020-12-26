@@ -107,9 +107,28 @@ public class Tree {
     }
     private int height(Node root){
         if (root == null) return -1;
-        if (root.leftChild == null || root.rightChild == null) return 0;
+        if (isLeaf(root)) return 0;
         return 1 +Math.max(height(root.leftChild),height(root.rightChild));
     }
+
+
+    private boolean isLeaf(Node root) {
+        return root.leftChild == null && root.rightChild == null;
+    }
+
+    public int min(){
+        return min(root);
+    }
+
+    private int min(Node root){
+        if (root == null) throw  new IllegalStateException();
+        if (isLeaf(root)) return root.value;
+        var leftMinValue = min(root.leftChild);
+        var rightMinValue = min(root.rightChild);
+        return Math.min(Math.min(leftMinValue,rightMinValue),root.value);
+    }
+
+
 
 
 }
