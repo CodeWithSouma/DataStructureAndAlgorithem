@@ -128,6 +128,19 @@ public class Tree {
         return Math.min(Math.min(leftMinValue,rightMinValue),root.value);
     }
 
+    private int minValueInBST(Node root){
+        if (root == null) throw new IllegalStateException();
+
+        Node current = root;
+        Node last = null;
+        while (current != null){
+            last = current;
+            current = current.leftChild;
+        }
+
+        return last.value;
+    }
+
 
 
 
