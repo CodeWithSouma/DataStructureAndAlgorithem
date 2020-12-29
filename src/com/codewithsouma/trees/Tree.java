@@ -32,14 +32,13 @@ public class Tree {
         Node current = root;
         while (true) {
             if (value < current.value) {
-                if (current.leftChild == null){
+                if (current.leftChild == null) {
                     current.leftChild = node;
                     break;
                 }
                 current = current.leftChild;
-            }
-            else {
-                if (current.rightChild == null){
+            } else {
+                if (current.rightChild == null) {
                     current.rightChild = node;
                     break;
                 }
@@ -68,11 +67,11 @@ public class Tree {
         return isPresent;
     }
 
-    public void  traversePreOrder(){
+    public void traversePreOrder() {
         traversePreOrder(root);
     }
 
-    public void traversePreOrder(Node root){
+    public void traversePreOrder(Node root) {
         if (root == null) return;
 
         System.out.println(root.value);
@@ -80,11 +79,11 @@ public class Tree {
         traversePreOrder(root.rightChild);
     }
 
-    public  void  traversePostOrder(){
+    public void traversePostOrder() {
         traversePostOrder(root);
     }
 
-    public void  traversePostOrder(Node root){
+    public void traversePostOrder(Node root) {
         if (root == null) return;
 
         traversePostOrder(root.leftChild);
@@ -92,11 +91,11 @@ public class Tree {
         System.out.println(root.value);
     }
 
-    public  void  traverseInOrder(){
+    public void traverseInOrder() {
         traverseInOrder(root);
     }
 
-    public void  traverseInOrder(Node root){
+    public void traverseInOrder(Node root) {
         if (root == null) return;
 
         traverseInOrder(root.leftChild);
@@ -104,13 +103,14 @@ public class Tree {
         traverseInOrder(root.rightChild);
     }
 
-    public int height(){
+    public int height() {
         return height(root);
     }
-    private int height(Node root){
+
+    private int height(Node root) {
         if (root == null) return -1;
         if (isLeaf(root)) return 0;
-        return 1 +Math.max(height(root.leftChild),height(root.rightChild));
+        return 1 + Math.max(height(root.leftChild), height(root.rightChild));
     }
 
 
@@ -118,24 +118,24 @@ public class Tree {
         return root.leftChild == null && root.rightChild == null;
     }
 
-    public int min(){
+    public int min() {
         return min(root);
     }
 
-    private int min(Node root){
-        if (root == null) throw  new IllegalStateException();
+    private int min(Node root) {
+        if (root == null) throw new IllegalStateException();
         if (isLeaf(root)) return root.value;
         var leftMinValue = min(root.leftChild);
         var rightMinValue = min(root.rightChild);
-        return Math.min(Math.min(leftMinValue,rightMinValue),root.value);
+        return Math.min(Math.min(leftMinValue, rightMinValue), root.value);
     }
 
-    private int minValueInBST(Node root){
+    private int minValueInBST(Node root) {
         if (root == null) throw new IllegalStateException();
 
         Node current = root;
         Node last = null;
-        while (current != null){
+        while (current != null) {
             last = current;
             current = current.leftChild;
         }
@@ -143,22 +143,33 @@ public class Tree {
         return last.value;
     }
 
-    public boolean equals(Tree other){
+    public boolean equals(Tree other) {
         if (other == null) return false;
-        return equals(root,other.root);
+        return equals(root, other.root);
     }
 
-    private boolean equals(Node first, Node second){
+    private boolean equals(Node first, Node second) {
         if (first == null && second == null) return true;
 
         if (first != null && second != null)
-            return first.value == second.value && equals(first.leftChild,second.leftChild)
-                    && equals(first.rightChild , second.rightChild);
+            return first.value == second.value && equals(first.leftChild, second.leftChild)
+                    && equals(first.rightChild, second.rightChild);
 
         return false;
     }
 
+    public boolean isBinarySearchTree() {
+       return isBinarySearchTree(root,Integer.MIN_VALUE,Integer.MAX_VALUE);
+    }
 
+    private boolean isBinarySearchTree(Node root, int min, int max) {
+        if (root == null) return true;
+        if (root.value < min || root.value > max)
+            return false;
+
+        return isBinarySearchTree(root.leftChild, min, root.value - 1) &&
+                isBinarySearchTree(root.rightChild, root.value + 1, max);
+    }
 
 
 }
