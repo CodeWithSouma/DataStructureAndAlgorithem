@@ -71,7 +71,7 @@ public class Tree {
         traversePreOrder(root);
     }
 
-    public void traversePreOrder(Node root) {
+    private void traversePreOrder(Node root) {
         if (root == null) return;
 
         System.out.println(root.value);
@@ -83,7 +83,7 @@ public class Tree {
         traversePostOrder(root);
     }
 
-    public void traversePostOrder(Node root) {
+    private void traversePostOrder(Node root) {
         if (root == null) return;
 
         traversePostOrder(root.leftChild);
@@ -95,7 +95,7 @@ public class Tree {
         traverseInOrder(root);
     }
 
-    public void traverseInOrder(Node root) {
+    private void traverseInOrder(Node root) {
         if (root == null) return;
 
         traverseInOrder(root.leftChild);
@@ -190,5 +190,11 @@ public class Tree {
 
     }
 
+
+    public void traverseLevelOrder(){
+        for (int i = 0; i <= height(); i++)
+            for ( int value : getNodesAtDistance(i))
+                System.out.println(value);
+    }
 
 }

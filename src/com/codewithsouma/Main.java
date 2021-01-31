@@ -19,6 +19,7 @@ public class Main {
 
        List<Integer> list = tree.getNodesAtDistance(2);
        System.out.println(list);
+       tree.traverseLevelOrder();
 
     }
 }
