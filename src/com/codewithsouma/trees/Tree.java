@@ -1,6 +1,6 @@
 package com.codewithsouma.trees;
 
-import com.sun.source.tree.ClassTree;
+import java.util.ArrayList;
 
 public class Tree {
     private class Node {
@@ -169,6 +169,25 @@ public class Tree {
 
         return isBinarySearchTree(root.leftChild, min, root.value - 1) &&
                 isBinarySearchTree(root.rightChild, root.value + 1, max);
+    }
+
+    public ArrayList<Integer> getNodesAtDistance(int distance){
+        var list = new ArrayList<Integer>();
+        getNodesAtDistance(root, distance,list);
+        return list;
+    }
+
+    private void getNodesAtDistance(Node root, int distance, ArrayList<Integer> list){
+        if (root == null) return;
+
+        if (distance == 0) {
+            list.add(root.value);
+            return;
+        }
+
+        getNodesAtDistance(root.leftChild, distance - 1,list);
+        getNodesAtDistance(root.rightChild, distance - 1,list);
+
     }
 
 
