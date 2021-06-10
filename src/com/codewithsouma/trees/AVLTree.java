@@ -48,11 +48,11 @@ public class AVLTree {
     private AVLNode balance(AVLNode root) {
         if (isLeftHeavy(root)) {
             if (balanceFactor(root.leftChild) < 0)
-                leftRotate(root.leftChild);
+               root.leftChild = leftRotate(root.leftChild);
           return rightRotate(root);
         } else if (isRightHeavy(root)) {
             if (balanceFactor(root.rightChild) > 0)
-                rightRotate(root.rightChild);
+               root.rightChild = rightRotate(root.rightChild);
             return leftRotate(root);
         }
 
