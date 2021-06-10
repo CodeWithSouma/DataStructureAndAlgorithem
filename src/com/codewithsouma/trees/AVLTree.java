@@ -1,9 +1,10 @@
 package com.codewithsouma.trees;
 
 public class AVLTree {
+
     private class AVLNode {
-        private int height;
         private int value;
+        private int height;
         private AVLNode leftChild;
         private AVLNode rightChild;
 
@@ -19,83 +20,113 @@ public class AVLTree {
         }
     }
 
-    private AVLNode node;
+    private AVLNode root;
 
     public void insert(int value) {
-        node = insert(node, value);
+        //insertNodeUsingIterativeMethod(value);
+        root = insert(root, value);
+
     }
 
     private AVLNode insert(AVLNode root, int value) {
-        if (root == null)
-            return new AVLNode(value);
+        if (root == null) return new AVLNode(value);
 
-        if (value < root.value)
+        if (root.value > value)
             root.leftChild = insert(root.leftChild, value);
         else
             root.rightChild = insert(root.rightChild, value);
 
         setHeight(root);
-        return  balance(root);
+
+        return balance(root);
     }
 
-    private AVLNode balance(AVLNode root){
-        if (isLeftHeavy(root)){
-            if (balanceFactor(root.leftChild) < 0)
-                rotateLeft(root.leftChild);
-           return rotateRight(root);
-        }
+    private void setHeight(AVLNode node) {
+        node.height = height(node);
+    }
 
-        else if (isRightHeavy(root)) {
+    private AVLNode balance(AVLNode root) {
+        if (isLeftHeavy(root)) {
+            if (balanceFactor(root.leftChild) < 0)
+                leftRotate(root.leftChild);
+          return rightRotate(root);
+        } else if (isRightHeavy(root)) {
             if (balanceFactor(root.rightChild) > 0)
-                rotateRight(root.rightChild);
-            return rotateLeft(root);
+                rightRotate(root.rightChild);
+            return leftRotate(root);
         }
 
         return root;
     }
 
-    private AVLNode rotateLeft(AVLNode root){
-        var newRoot = root.rightChild;
-
+    private AVLNode leftRotate(AVLNode root){
+        AVLNode newRoot = root.rightChild;
         root.rightChild = newRoot.leftChild;
         newRoot.leftChild = root;
 
-        setHeight(root);
         setHeight(newRoot);
-
+        setHeight(root);
         return newRoot;
     }
 
-    private AVLNode rotateRight(AVLNode root){
-        var newRoot = root.leftChild;
-
+    private AVLNode rightRotate(AVLNode root){
+        AVLNode newRoot = root.leftChild;
         root.leftChild = newRoot.rightChild;
         newRoot.rightChild = root;
 
-        setHeight(root);
         setHeight(newRoot);
-
+        setHeight(root);
         return newRoot;
-    }
 
-    private void setHeight(AVLNode node){
-        node.height = Math.max(height(node.leftChild),height(node.rightChild)) + 1;
     }
 
     private boolean isLeftHeavy(AVLNode node) {
         return balanceFactor(node) > 1;
     }
 
+    private int balanceFactor(AVLNode node) {
+        return node == null ? 0 : height(node.leftChild) - height(node.rightChild);
+    }
+
     private boolean isRightHeavy(AVLNode node) {
         return balanceFactor(node) < -1;
     }
 
-    private int balanceFactor(AVLNode node) {
-        return (node == null) ? 0 : height(node.leftChild) - height(node.rightChild);
+    public int height() {
+        return height(root);
     }
 
     private int height(AVLNode node) {
-        return node == null ? -1 : node.height;
+        if (node == null) return -1;
+        if (isLeafNode(node)) return 0;
+        return 1 + Math.max(height(node.leftChild), height(node.rightChild));
+    }
+
+    private boolean isLeafNode(AVLNode node) {
+        return node.rightChild == null && node.leftChild == null;
+    }
+
+    private void insertNodeUsingIterativeMethod(int value) {
+        var newNode = new AVLNode(value);
+        if (root == null) root = newNode;
+        else {
+            var node = whereToPlace(value);
+            if (node.value > value) node.leftChild = newNode;
+            else node.rightChild = newNode;
+        }
+    }
+
+    private AVLNode whereToPlace(int value) {
+        var currentNode = root;
+        while (true) {
+            if (currentNode.value > value) {
+                if (currentNode.leftChild == null) return currentNode;
+                currentNode = currentNode.leftChild;
+            } else if (currentNode.value < value) {
+                if (currentNode.rightChild == null) return currentNode;
+                currentNode = currentNode.rightChild;
+            }
+        }
     }
 
 }
