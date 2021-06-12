@@ -36,7 +36,7 @@ public class Heap {
         }
     }
 
-    private boolean isEmpty(){
+    public boolean isEmpty(){
         return size == 0;
     }
 
@@ -81,7 +81,7 @@ public class Heap {
         return (index * 2) + 2;
     }
 
-    private boolean isFull() {
+    public boolean isFull() {
         return size == items.length;
     }
 
