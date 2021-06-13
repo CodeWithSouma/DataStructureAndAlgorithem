@@ -16,7 +16,6 @@ public class Main {
        int[] numbers = {5,3,8,4,1,12};
         MaxHeap.heapify(numbers);
         System.out.println(Arrays.toString(numbers));
-
-
+        System.out.println("Kth largest element: "+ MaxHeap.getKthLargest(numbers,7));
     }
 }

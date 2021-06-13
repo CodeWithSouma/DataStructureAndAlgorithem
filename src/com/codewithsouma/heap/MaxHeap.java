@@ -2,42 +2,46 @@ package com.codewithsouma.heap;
 
 public class MaxHeap {
     public static void heapify(int[] array) {
-        int lastParentIndex = array.length / 2 -1;
-        for (var i = lastParentIndex; i >=0; i--)
+        var lastParentIndex = (array.length - 1) / 2;
+        for (int i = lastParentIndex; i >= 0; i--)
             heapify(array, i);
     }
 
     private static void heapify(int[] array, int index) {
-        var largerIndex = index;
+        int largerValueIndex = index;
+        int leftChildIndex = getLeftChildIndex(index);
+        if (leftChildIndex < array.length && array[leftChildIndex] > array[largerValueIndex])
+            largerValueIndex = leftChildIndex;
+        int rightChildIndex = getRightChildIndex(index);
+        if (rightChildIndex < array.length && array[rightChildIndex] > array[largerValueIndex])
+            largerValueIndex = rightChildIndex;
+        if (largerValueIndex == index) return;
 
-        var leftIndex =  leftChildIndex(index);
-        if (leftIndex < array.length &&
-                array[leftIndex] > array[largerIndex])
-            largerIndex = leftIndex;
-
-        var rightIndex = rightChildIndex(index);
-        if (rightIndex < array.length &&
-                array[rightIndex] > array[largerIndex])
-            largerIndex = rightIndex;
-
-        if (index == largerIndex)
-            return;
-
-        swap(array, index, largerIndex);
-        heapify(array, largerIndex);
+        swap(array,index,largerValueIndex);
+        heapify(array,largerValueIndex);
     }
 
-    private static int rightChildIndex(int index) {
+    private static void swap(int [] array, int index1, int index2){
+        int temp = array[index1];
+        array[index1] = array[index2];
+        array[index2] = temp;
+    }
+
+    private static int getRightChildIndex(int index) {
         return index * 2 + 2;
     }
 
-    private static int leftChildIndex(int index) {
+    private static int getLeftChildIndex(int index) {
         return index * 2 + 1;
     }
 
-    private static void swap(int[] array, int first, int second) {
-        var temp = array[first];
-        array[first] = array[second];
-        array[second] = temp;
+    public static int getKthLargest(int [] array, int k){
+        if (k < 1 || k > array.length) throw new IllegalStateException();
+        var heap = new Heap(array.length);
+        for (int element: array)
+            heap.insert(element);
+        for (int i = 1; i < k; i++)
+            heap.remove();
+        return heap.max();
     }
 }
