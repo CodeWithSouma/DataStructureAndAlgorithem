@@ -36,6 +36,14 @@ public class Trie {
         public Node[] getAllChildren() {
             return children.values().toArray(new Node[0]);
         }
+
+        public boolean hasChildren() {
+            return !children.isEmpty();
+        }
+
+        public void removeChild(char ch) {
+            children.remove(ch);
+        }
     }
 
     private Node root = new Node(' ');
@@ -63,6 +71,7 @@ public class Trie {
 
     public void traverse() {
         preOrderTraverse(root);
+        postOrderTraverser(root);
     }
 
     private void preOrderTraverse(Node root) {
@@ -70,6 +79,32 @@ public class Trie {
         for (Node child : root.getAllChildren())
             preOrderTraverse(child);
     }
+
+    private void postOrderTraverser(Node root) {
+        for (Node child : root.getAllChildren())
+            postOrderTraverser(child);
+        System.out.println(root.value);
+    }
+
+    public void remove(String word) {
+        if (word == null) return;
+        remove(root, word.toLowerCase(), 0);
+    }
+
+    private void remove(Node root, String word, int index) {
+        if (index == word.length()) {
+            root.isEndOfWord = false;
+            return;
+        }
+        char ch = word.charAt(index);
+        Node child = root.getChild(ch);
+        if (child == null) return;
+        remove(child,word,index+1);
+        if (!child.hasChildren() && !child.isEndOfWord)
+            root.removeChild(child.value);
+    }
+
+
 
 /*
     private int calculateIndex(char ch) {

@@ -15,13 +15,12 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        /*Trie trie =  new Trie();
-        trie.insert("Can");
-        trie.insert("Cat");
-        trie.traverse();*/
-        Matrix matrix = new Matrix(3,3);
-        matrix.inputMatrix();
-        matrix.printMatrix();
-        System.out.println();
+        Trie trie =  new Trie();
+        trie.insert("Car");
+        trie.insert("care");
+        trie.remove("car");
+        System.out.println(trie.contains("car"));
+        System.out.println(trie.contains("care"));
+
     }
 }
