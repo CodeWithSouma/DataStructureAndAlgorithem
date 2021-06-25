@@ -12,7 +12,7 @@ public class Main {
         trie.insert("care");
         trie.insert("Careful");
         trie.insert("egg");
-        System.out.println(trie.findWords("cardo"));
+        System.out.println(trie.findWords("car"));
 
 
     }

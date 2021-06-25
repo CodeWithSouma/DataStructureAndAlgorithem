@@ -133,28 +133,32 @@ public class Trie {
 
 
     public List<String> findWords(String prefix) {
-        List<String> words = new ArrayList<>();
-        var lastNode = findLastNodeOf(prefix.toLowerCase());
-        findWords(lastNode, prefix.toLowerCase(), words);
-        return words;
+      List<String> words = new ArrayList<>();
+      if (prefix != null){
+          Node lastNode = findLastNode(prefix.toLowerCase());
+          findWords(lastNode, prefix, words);
+      }
+      return words;
     }
 
-    private Node findLastNodeOf(String prefix) {
-        var current = root;
-        for (char ch : prefix.toCharArray()) {
-            var child = current.getChild(ch);
+    private void findWords(Node node, String prefix, List<String> words) {
+        if (node == null) return;
+        if (node.isEndOfWord)
+            words.add(prefix);
+
+        for (Node child : node.getAllChild()) {
+            findWords(child, prefix + child.value, words);
+        }
+    }
+
+    private Node findLastNode(String prefix) {
+        Node current = root;
+        for (char ch : prefix.toLowerCase().toCharArray()) {
+            Node child = current.getChild(ch);
             if (child == null) return null;
             current = child;
         }
         return current;
-    }
-
-    private void findWords(Node root, String prefix, List<String> words) {
-        if (root == null) return;
-        if (root.isEndOfWord)
-            words.add(prefix);
-        for (Node child : root.getAllChild())
-            findWords(child, prefix + child.value, words);
     }
 
 
