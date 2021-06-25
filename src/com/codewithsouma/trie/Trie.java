@@ -1,24 +1,36 @@
 package com.codewithsouma.trie;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 public class Trie {
-    private static final int ALPHABET_SIZE = 26;
-
+    //private int ALPHABET_IN_ENGLISH = 26;
     private class Node {
         private char value;
-        //        private Node[] children = new Node[ALPHABET_SIZE];
-        private HashMap<Character, Node> children = new HashMap<>();
-        private boolean isEndOfWord;
-
-        private Node(char value) {
-            this.value = value;
+        private boolean isEndOfWord = false;
+        /*private Node[] children = new Node[ALPHABET_IN_ENGLISH]; // replace array implementation with hashMap
+        public boolean hasChild(char ch){
+            return children[calculateIndex(ch)] != null;
         }
 
-        @Override
-        public String toString() {
-            return "value=" + value;
+        public void addChild(char ch){
+            children[calculateIndex(ch)] = new Node(ch);
+        }
+
+        public Node getChild(char ch) {
+            return children[calculateIndex(ch)];
+        }
+
+        public Node[] getAllChild(){
+            return children;
+        }
+
+        private int calculateIndex(char ch) {
+            return ch - 'a';
+        }*/
+        private HashMap<Character, Node> children = new HashMap<>();
+
+        public Node(char value) {
+            this.value = value;
         }
 
         public boolean hasChild(char ch) {
@@ -33,83 +45,117 @@ public class Trie {
             return children.get(ch);
         }
 
-        public Node[] getAllChildren() {
-            return children.values().toArray(new Node[0]);
+        public Node[] getAllChild() {
+            return children.values().toArray(Node[]::new);
         }
 
-        public boolean hasChildren() {
+        public boolean hasAnyChildren() {
             return !children.isEmpty();
         }
 
         public void removeChild(char ch) {
             children.remove(ch);
         }
+
+        private int calculateIndex(char ch) {
+            return ch - 'a';
+        }
+
+        @Override
+        public String toString() {
+            return "value=" + value;
+        }
     }
 
     private Node root = new Node(' ');
 
+    // insert operation
     public void insert(String word) {
-        if (word == null) throw new IllegalStateException();
+        if (word == null || word.isEmpty()) throw new IllegalStateException();
+
         Node current = root;
-        for (char ch : word.toLowerCase().toCharArray()) {
+        for (char ch : word.trim().toLowerCase().toCharArray()) {
             if (!current.hasChild(ch))
                 current.addChild(ch);
             current = current.getChild(ch);
         }
+
         current.isEndOfWord = true;
     }
 
+    //contains operation
     public boolean contains(String word) {
         if (word == null) throw new IllegalStateException();
+
         Node current = root;
-        for (char ch : word.toLowerCase().toCharArray()) {
+        for (char ch : word.trim().toLowerCase().toCharArray()) {
             if (!current.hasChild(ch)) return false;
             current = current.getChild(ch);
         }
+
         return current.isEndOfWord;
     }
 
     public void traverse() {
-        preOrderTraverse(root);
-        postOrderTraverser(root);
+        postOrderTraverse(root);
+    }
+
+    private void postOrderTraverse(Node root) {
+        for (Node child : root.getAllChild())
+            postOrderTraverse(child);
+        System.out.println(root.value);
     }
 
     private void preOrderTraverse(Node root) {
         System.out.println(root.value);
-        for (Node child : root.getAllChildren())
+        for (Node child : root.getAllChild())
             preOrderTraverse(child);
     }
 
-    private void postOrderTraverser(Node root) {
-        for (Node child : root.getAllChildren())
-            postOrderTraverser(child);
-        System.out.println(root.value);
-    }
-
     public void remove(String word) {
-        if (word == null) return;
+        if (word == null || word.isEmpty()) return;
         remove(root, word.toLowerCase(), 0);
     }
 
-    private void remove(Node root, String word, int index) {
+    private void remove(Node current, String word, int index) {
         if (index == word.length()) {
-            root.isEndOfWord = false;
+            current.isEndOfWord = false;
             return;
         }
-        char ch = word.charAt(index);
-        Node child = root.getChild(ch);
+
+        var child = current.getChild(word.charAt(index));
         if (child == null) return;
-        remove(child,word,index+1);
-        if (!child.hasChildren() && !child.isEndOfWord)
-            root.removeChild(child.value);
+        remove(child, word, index + 1);
+
+        if (!child.isEndOfWord && !child.hasAnyChildren())
+            current.removeChild(child.value);
     }
 
 
-
-/*
-    private int calculateIndex(char ch) {
-        return ch - 'a';
+    public List<String> findWords(String prefix) {
+        List<String> words = new ArrayList<>();
+        var lastNode = findLastNodeOf(prefix.toLowerCase());
+        findWords(lastNode, prefix.toLowerCase(), words);
+        return words;
     }
-*/
+
+    private Node findLastNodeOf(String prefix) {
+        var current = root;
+        for (char ch : prefix.toCharArray()) {
+            var child = current.getChild(ch);
+            if (child == null) return null;
+            current = child;
+        }
+        return current;
+    }
+
+    private void findWords(Node root, String prefix, List<String> words) {
+        if (root == null) return;
+        if (root.isEndOfWord)
+            words.add(prefix);
+        for (Node child : root.getAllChild())
+            findWords(child, prefix + child.value, words);
+    }
+
 
 }
