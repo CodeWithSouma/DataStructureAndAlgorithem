@@ -56,32 +56,79 @@ public class DirectedGraph {
         adjacencyList.get(fromNode).remove(toNode);
     }
 
-    public void dfsTraverse(String label) {
+    public void traverseDepthFirst(String label) {
         var node = nodes.get(label);
         if (node == null) return;
         Set<Node> setOfVisitedNodes = new HashSet<>();
-        dfs(node, setOfVisitedNodes);
+        //dfs(node, setOfVisitedNodes);
+        iterativeDFS(label);
+    }
+
+    private void iterativeDFS(String label){
+        var node = nodes.get(label);
+        if (node == null) return;
+
+        Stack<Node> stackOfNodes = new Stack<>();
+        stackOfNodes.push(node);
+        Set<Node> setOfVisitedNodes = new HashSet<>();
+
+        while (!stackOfNodes.isEmpty()){
+            var currentNode = stackOfNodes.pop();
+
+            if (setOfVisitedNodes.contains(currentNode)) continue;
+
+            System.out.print(currentNode.label+"\t");
+            setOfVisitedNodes.add(currentNode);
+
+            var listOfAdjacentNodes = adjacencyList.get(currentNode);
+            for (var adjacentNode: listOfAdjacentNodes)
+                if (!setOfVisitedNodes.contains(adjacentNode))
+                    stackOfNodes.push(adjacentNode);
+        }
     }
 
     private void dfs(Node node, Set<Node> setOfVisitedNodes) {
-        if (node == null) return;
-        if (!setOfVisitedNodes.contains(node)) {
-            System.out.print(node.label + "\t");
-            setOfVisitedNodes.add(node);
-        }
+        System.out.print(node.label + "\t");
+        setOfVisitedNodes.add(node);
 
         var listOfAdjacentNodes = adjacencyList.get(node);
         for (var adjacentNode : listOfAdjacentNodes)
-            dfs(adjacentNode, setOfVisitedNodes);
+            if (!setOfVisitedNodes.contains(adjacentNode))
+                dfs(adjacentNode, setOfVisitedNodes);
     }
 
-    public void bfsTraverse(String label) {
+    public void traverseBreadthFirst(String label) {
         var node = nodes.get(label);
         if (node == null) return;
         Set<Node> setOfVisitedNodes = new HashSet<>();
         var queue = new ArrayDeque<Node>();
         queue.add(node);
-        bfs(setOfVisitedNodes, queue);
+        //bfs(setOfVisitedNodes, queue);
+        iterativeBFS(label);
+    }
+
+    private void iterativeBFS(String label){
+        var node  = nodes.get(label);
+        if (node == null) return;
+
+        Queue<Node> queueOfNode = new ArrayDeque<>();
+        Set<Node> setVisitedNodes = new HashSet<>();
+        queueOfNode.add(node);
+
+        while (!queueOfNode.isEmpty()){
+            var currentNode = queueOfNode.remove();
+
+            if (setVisitedNodes.contains(currentNode)) continue;
+
+            System.out.print(currentNode.label + "\t");
+            setVisitedNodes.add(currentNode);
+
+            var listOfAdjacentNodes = adjacencyList.get(currentNode);
+            for (var adjacentNode : listOfAdjacentNodes)
+                if (!setVisitedNodes.contains(adjacentNode))
+                    queueOfNode.add(adjacentNode);
+        }
+
     }
 
     private void bfs(Set<Node> setOfVisitedNodes, ArrayDeque<Node> queue) {

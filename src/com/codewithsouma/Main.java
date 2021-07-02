@@ -20,9 +20,6 @@ public class Main {
 
 
 
-
-        graph.bfsTraverse("C");
-
-
+        graph.traverseBreadthFirst("D");
     }
 }
