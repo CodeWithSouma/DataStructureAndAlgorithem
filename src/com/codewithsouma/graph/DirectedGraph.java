@@ -64,7 +64,7 @@ public class DirectedGraph {
         iterativeDFS(label);
     }
 
-    private void iterativeDFS(String label){
+    private void iterativeDFS(String label) {
         var node = nodes.get(label);
         if (node == null) return;
 
@@ -72,16 +72,16 @@ public class DirectedGraph {
         stackOfNodes.push(node);
         Set<Node> setOfVisitedNodes = new HashSet<>();
 
-        while (!stackOfNodes.isEmpty()){
+        while (!stackOfNodes.isEmpty()) {
             var currentNode = stackOfNodes.pop();
 
             if (setOfVisitedNodes.contains(currentNode)) continue;
 
-            System.out.print(currentNode.label+"\t");
+            System.out.print(currentNode.label + "\t");
             setOfVisitedNodes.add(currentNode);
 
             var listOfAdjacentNodes = adjacencyList.get(currentNode);
-            for (var adjacentNode: listOfAdjacentNodes)
+            for (var adjacentNode : listOfAdjacentNodes)
                 if (!setOfVisitedNodes.contains(adjacentNode))
                     stackOfNodes.push(adjacentNode);
         }
@@ -107,15 +107,15 @@ public class DirectedGraph {
         iterativeBFS(label);
     }
 
-    private void iterativeBFS(String label){
-        var node  = nodes.get(label);
+    private void iterativeBFS(String label) {
+        var node = nodes.get(label);
         if (node == null) return;
 
         Queue<Node> queueOfNode = new ArrayDeque<>();
         Set<Node> setVisitedNodes = new HashSet<>();
         queueOfNode.add(node);
 
-        while (!queueOfNode.isEmpty()){
+        while (!queueOfNode.isEmpty()) {
             var currentNode = queueOfNode.remove();
 
             if (setVisitedNodes.contains(currentNode)) continue;
@@ -142,6 +142,32 @@ public class DirectedGraph {
         for (var adjacentNode : listOfAllAdjacentNode)
             queue.push(adjacentNode);
         bfs(setOfVisitedNodes, queue);
+    }
+
+    public List<String> topologicalSort() {
+        Set<Node> setOfVisitedNode = new HashSet<>();
+        Stack<Node> stack = new Stack<>();
+
+        for (var node : nodes.values())
+            topologicalSort(node, setOfVisitedNode, stack);
+
+        List<String> sorted = new ArrayList<>();
+        while (!stack.empty())
+            sorted.add(stack.pop().label);
+
+        return sorted;
+    }
+
+    private void topologicalSort(Node node, Set<Node> setOfVisitedNode, Stack<Node> stack) {
+        if (setOfVisitedNode.contains(node)) return;
+
+        setOfVisitedNode.add(node);
+
+        var adjacentNodes = adjacencyList.get(node);
+        for (var adjacentNode : adjacentNodes)
+            topologicalSort(adjacentNode, setOfVisitedNode, stack);
+
+        stack.push(node);
     }
 
     public void print() {
