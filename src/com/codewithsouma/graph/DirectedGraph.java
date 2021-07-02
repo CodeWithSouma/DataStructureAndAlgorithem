@@ -56,6 +56,47 @@ public class DirectedGraph {
         adjacencyList.get(fromNode).remove(toNode);
     }
 
+    public void dfsTraverse(String label) {
+        var node = nodes.get(label);
+        if (node == null) return;
+        Set<Node> setOfVisitedNodes = new HashSet<>();
+        dfs(node, setOfVisitedNodes);
+    }
+
+    private void dfs(Node node, Set<Node> setOfVisitedNodes) {
+        if (node == null) return;
+        if (!setOfVisitedNodes.contains(node)) {
+            System.out.print(node.label + "\t");
+            setOfVisitedNodes.add(node);
+        }
+
+        var listOfAdjacentNodes = adjacencyList.get(node);
+        for (var adjacentNode : listOfAdjacentNodes)
+            dfs(adjacentNode, setOfVisitedNodes);
+    }
+
+    public void bfsTraverse(String label) {
+        var node = nodes.get(label);
+        if (node == null) return;
+        Set<Node> setOfVisitedNodes = new HashSet<>();
+        var queue = new ArrayDeque<Node>();
+        queue.add(node);
+        bfs(setOfVisitedNodes, queue);
+    }
+
+    private void bfs(Set<Node> setOfVisitedNodes, ArrayDeque<Node> queue) {
+        if (queue.isEmpty()) return;
+        var currentNode = queue.remove();
+        if (!setOfVisitedNodes.contains(currentNode)) {
+            System.out.print(currentNode.label + "\t");
+            setOfVisitedNodes.add(currentNode);
+        }
+        var listOfAllAdjacentNode = adjacencyList.get(currentNode);
+        for (var adjacentNode : listOfAllAdjacentNode)
+            queue.push(adjacentNode);
+        bfs(setOfVisitedNodes, queue);
+    }
+
     public void print() {
         for (var source : adjacencyList.keySet())
             System.out.println(source + " is connected with: " + adjacencyList.get(source));
