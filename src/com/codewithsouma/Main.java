@@ -7,19 +7,15 @@ public class Main {
 
     public static void main(String[] args) {
         DirectedGraph graph = new DirectedGraph();
-        graph.addNode("X");
         graph.addNode("A");
         graph.addNode("B");
-        graph.addNode("P");
+        graph.addNode("C");
 
 
-        graph.addEdge("X","A");
-        graph.addEdge("A","P");
-        graph.addEdge("X","B");
-        graph.addEdge("B","P");
-
-        var list = graph.topologicalSort();
-        System.out.println(list);
+        graph.addEdge("A","B");
+        graph.addEdge("B","C");
+        graph.addEdge("C","A");
+        System.out.println(graph.hasCycle());
 
     }
 }
